@@ -1,0 +1,33 @@
+<!html>
+<html>
+<head>
+    <title>Ping Pong!</title>
+</head>
+<body>
+    <div>
+        <a class="ping" href="#" data-attack="ping">Ping</a>
+        <a class="ping" href="#" data-attack="fireball">Fireball</a>
+    </div>
+    <div id="result">
+    </div>
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/socket.io/socket.io.min.js"></script>
+    <script>
+    $(function(){
+        var socket = io.connect('/pingpong');
+        socket.on('pong',function(data){
+            console.log('pong')
+            console.log(data)
+            $('#result').append(data.sound + '<br/>');
+        });
+        $('.ping').click(function(event){
+            event.preventDefault();
+            attack = $(this).data('attack');
+            console.log(attack);
+            socket.emit('ping',{'type':attack}) 
+        }); 
+    });
+    </script>
+</body>
+
+</html>
